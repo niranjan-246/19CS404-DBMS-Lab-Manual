@@ -6,14 +6,14 @@ To understand and apply ER modeling concepts by creating ER diagrams for real-wo
 ## Purpose
 Gain hands-on experience in designing ER diagrams that represent database structure including entities, relationships, attributes, and constraints.
 
---- 
+---
 
 # Scenario A: City Fitness Club Management
 
-**Business Context:**  
+*Business Context:*  
 FlexiFit Gym wants a database to manage its members, trainers, and fitness programs.
 
-**Requirements:**  
+*Requirements:*  
 - Members register with name, membership type, and start date.  
 - Each member can join multiple programs (Yoga, Zumba, Weight Training).  
 - Trainers assigned to programs; a program may have multiple trainers.  
@@ -22,122 +22,127 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 - Payments tracked for memberships and sessions.
 
 ### ER Diagram:
-*Paste or attach your diagram here*  
-![ER Diagram](er_diagram_fitness.png)
 
-### Entities and Attributes
+<img width="1536" height="1024" alt="City ER diagram" src="https://github.com/user-attachments/assets/3f8512a0-14e5-4213-82e6-454c5894fe5c" />
 
-| Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
 
-### Relationships and Constraints
+# City Library Event & Book Lending System
 
-| Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+## Entities and Attributes
 
-### Assumptions
-- 
-- 
-- 
+### 1. MEMBER
+- MemberID (Primary Key)
+- Name
+- Phone
+- Email
+- Address
 
----
+### 2. BOOK
+- BookID (Primary Key)
+- Title
+- Author
+- Category
+- ISBN
 
-# Scenario B: City Library Event & Book Lending System
+### 3. LOAN
+- LoanID (Primary Key)
+- IssueDate
+- DueDate
+- ReturnDate
+- FineAmount
 
-**Business Context:**  
-The Central Library wants to manage book lending and cultural events.
+### 4. EVENT
+- EventID (Primary Key)
+- EventName
+- EventDate
+- EventTime
+- EventType
 
-**Requirements:**  
-- Members borrow books, with loan and return dates tracked.  
-- Each book has title, author, and category.  
-- Library organizes events; members can register.  
-- Each event has one or more speakers/authors.  
-- Rooms are booked for events and study.  
-- Overdue fines apply for late returns.
+### 5. SPEAKER
+- SpeakerID (Primary Key)
+- SpeakerName
+- Topic
+- ContactInfo
 
-### ER Diagram:
-*Paste or attach your diagram here*  
-![ER Diagram](er_diagram_library.png)
+### 6. ROOM
+- RoomID (Primary Key)
+- RoomName
+- Capacity
+- Purpose
+- Status
 
-### Entities and Attributes
+### 7. EVENTREGISTRATION
+- RegistrationID (Primary Key)
+- RegisterDate
+- Status
 
-| Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+### 8. EVENTSPEAKER
+- EventID (Foreign Key)
+- SpeakerID (Foreign Key)
 
-### Relationships and Constraints
-
-| Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
-
-### Assumptions
-- 
-- 
-- 
+### 9. ROOMBOOKING
+- BookingID (Primary Key)
+- StartDateTime
+- EndDateTime
+- BookingType
+- Purpose
 
 ---
 
-# Scenario C: Restaurant Table Reservation & Ordering
+# Relationships and Constraints
 
-**Business Context:**  
-A popular restaurant wants to manage reservations, orders, and billing.
+### MEMBER — borrows → LOAN
+One member can borrow many books through loans.  
+Each loan belongs to one member.  
+*(1-to-Many)*
 
-**Requirements:**  
-- Customers can reserve tables or walk in.  
-- Each reservation includes date, time, and number of guests.  
-- Customers place food orders linked to reservations.  
-- Each order contains multiple dishes; dishes belong to categories (starter, main, dessert).  
-- Bills generated per reservation, including food and service charges.  
-- Waiters assigned to serve reservations.
+### BOOK — involved in → LOAN
+One book can appear in many loan records.  
+Each loan record is associated with one book.  
+*(1-to-Many)*
 
-### ER Diagram:
-*Paste or attach your diagram here*  
-![ER Diagram](er_diagram_restaurant.png)
+### MEMBER — registers → EVENTREGISTRATION
+One member can register for multiple events.  
+Each registration belongs to one member.  
+*(1-to-Many)*
 
-### Entities and Attributes
+### EVENT — contains → EVENTREGISTRATION
+One event can have many registrations.  
+Each registration belongs to one event.  
+*(1-to-Many)*
 
-| Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+### EVENT — assigned to → SPEAKER
+An event can have multiple speakers.  
+A speaker can participate in multiple events.  
+*(Many-to-Many)*
 
-### Relationships and Constraints
+### ROOM — booked in → ROOMBOOKING
+One room can have many bookings.  
+Each booking belongs to one room.  
+*(1-to-Many)*
 
-| Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
-
-### Assumptions
-- 
-- 
-- 
+### EVENT — uses → ROOMBOOKING
+One event can have multiple room bookings.  
+Each room booking belongs to one event.  
+*(1-to-Many)*
 
 ---
 
-## Instructions for Students
+# Assumptions
 
-1. Complete **all three scenarios** (A, B, C).  
-2. Identify entities, relationships, and attributes for each.  
-3. Draw ER diagrams using **draw.io / diagrams.net** or hand-drawn & scanned.  
-4. Fill in all tables and assumptions for each scenario.  
-5. Export the completed Markdown (with diagrams) as **a single PDF**
+- Each member must have a valid MemberID.
+- A book can be borrowed multiple times but only through separate loan records.
+- FineAmount is calculated based on delayed return of books.
+- A member can register for multiple events.
+- An event may have multiple speakers.
+- Each speaker must have at least one topic of specialization.
+- Room bookings are required before conducting an event.
+- A room cannot be booked for overlapping time periods.
+- Attendance and event participation are managed through event registrations.
+- EventSpeaker is used to resolve the many-to-many relationship between events and speakers.
+
+---
+
+# Result
+
+Hence, the concepts of ER diagrams are understood and applied by creating an ER diagram for a real-world City Library Event & Book Lending System.
